@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ModeloEntrevistasMovil.MainPage"
+             BackgroundColor="#F5F6F6"
+             NavigationPage.HasNavigationBar="False"
+             xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:behavior="clr-namespace:ModeloEntrevistasMovil.View.Controls.Behavior">
+
+
+    <Grid>
+        <Grid RowDefinitions="Auto, Auto, Auto, *" RowSpacing="30" Padding="30">
+            <Grid ColumnDefinitions="Auto, *, Auto">
+                <Label Grid.Column="1" Text="Modelo Entrevitas" TextColor="#2D2942" FontSize="20" FontAttributes="Bold" 
+                       VerticalOptions="Center" HorizontalOptions="Center"/>
+                <Image Grid.Column="2" Source="add.png" VerticalOptions="Center" HeightRequest="24" WidthRequest="24"/>
+            </Grid>
+            <Grid Grid.Row="1" ColumnDefinitions="*, Auto" ColumnSpacing="15">
+                <Frame Padding="10" HeightRequest="25" HorizontalOptions="Center" Opacity="0.5" 
+                   BackgroundColor="#E6EAEA" VerticalOptions="Start" 
+                   CornerRadius="25" BorderColor="Transparent">
+                    <SearchBar Placeholder="Search"  
+                           BackgroundColor="Transparent">
+                        <SearchBar.Behaviors>
+                            <behavior:EventToCommandBehavior
+                            EventName="TextChanged" 
+                            Command="{Binding SearchBarCommand}"
+                            EventArgsConverter="{StaticResource ItemTappedConverter}" />
+                        </SearchBar.Behaviors>
+                    </SearchBar>
+                </Frame>
+                <Grid Grid.Column="1" HorizontalOptions="End">
+                    <Ellipse HeightRequest="42" WidthRequest="42" Fill="Transparent"/>
+                    <Image Source="Filter.png" VerticalOptions="Center" HeightRequest="20" WidthRequest="20"/>
+                </Grid>
+            </Grid>
+            <Grid Grid.Row="2" ColumnDefinitions="*, Auto" ColumnSpacing="15">
+                <Label Text="Estudiantes" TextColor="#2D2942" FontSize="20" FontAttributes="Bold" VerticalOptions="Center" />
+            </Grid>
+
+            <CollectionView Grid.Row="3" Margin="25" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                        SelectionMode="None" ItemsSource="{Binding Estudiantes}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="20"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <pv:PancakeView BackgroundColor="White" VerticalOptions="StartAndExpand" 
+                                    HorizontalOptions="FillAndExpand">
+                            <Grid VerticalOptions="StartAndExpand" HorizontalOptions="FillAndExpand">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <BoxView BackgroundColor="{Binding Color}" WidthRequest="3" HorizontalOptions="Start"
+                                     VerticalOptions="FillAndExpand"/>
+                            </Grid>
+                        </pv:PancakeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+    </Grid>
+
+</ContentPage>
