@@ -5,9 +5,30 @@
              BackgroundColor="#F5F6F6"
              NavigationPage.HasNavigationBar="False"
              xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
-             xmlns:behavior="clr-namespace:ModeloEntrevistasMovil.View.Controls.Behavior">
+             xmlns:behavior="clr-namespace:ModeloEntrevistasMovil.View.Controls.Behavior"
+             xmlns:convert="clr-namespace:ModeloEntrevistasMovil.ViewModel.Converters">
 
+    <ContentPage.Resources>
+        <Style TargetType="Grid">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal" />
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor"
+                                        Value="Transparent" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
 
+        <ResourceDictionary>
+            <convert:ItemTappedEventArgsConverter x:Key="ItemTappedConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <Grid>
         <Grid RowDefinitions="Auto, Auto, Auto, *" RowSpacing="30" Padding="30">
             <Grid ColumnDefinitions="Auto, *, Auto">
@@ -52,8 +73,9 @@
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <BoxView BackgroundColor="{Binding Color}" WidthRequest="3" HorizontalOptions="Start"
+                                <BoxView BackgroundColor="Black" WidthRequest="3" HorizontalOptions="Start"
                                      VerticalOptions="FillAndExpand"/>
+                                <Label Text="{Binding Nombre}" Grid.Column="1" TextColor="Black" FontSize="Title"></Label>
                             </Grid>
                         </pv:PancakeView>
                     </DataTemplate>

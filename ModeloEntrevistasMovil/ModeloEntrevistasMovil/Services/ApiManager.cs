@@ -15,8 +15,14 @@ namespace ModeloEntrevistasMovil.Services
         HttpClient client;
         public ApiManager()
         {
-            client = new HttpClient() { BaseAddress = new Uri(Application.Current.Resources["Url"].ToString()) };
-            _ = client.Timeout.Add(new TimeSpan(0, 8, 0));
+
+            var httpClientHandler = new HttpClientHandler();
+
+            httpClientHandler.ServerCertificateCustomValidationCallback =
+            (message, cert, chain, errors) => { return true; };
+
+            client = new HttpClient(httpClientHandler) { BaseAddress = new Uri(Application.Current.Resources["Url"].ToString()) };
+            client.Timeout.Add(new TimeSpan(0, 8, 0));
         }
 
         public async Task<List<Estudiantes>> GetEstudiantes()
@@ -47,7 +53,7 @@ namespace ModeloEntrevistasMovil.Services
                 ? request.Content.ReadAsStringAsync().Result.ToString()
                 : null;
         }
-        public async Task<string> UpdateEstudiantes(int Id)
+        public async Task<string> UpdateEstudiantes(Estudiantes args)
         {
             if (!CrossConnectivity.Current.IsConnected)
             {
@@ -55,7 +61,23 @@ namespace ModeloEntrevistasMovil.Services
                 return null;
             }
 
-            HttpResponseMessage request = await client.PutAsync($"api/estudiantes", );
+            HttpResponseMessage request = await client.PutAsync("api/estudiantes",
+                new StringContent(JsonConvert.SerializeObject(args), Encoding.UTF8, "application/json"));
+            return request.IsSuccessStatusCode
+                ? request.Content.ReadAsStringAsync().Result.ToString()
+                : null;
+        }
+
+        public async Task<string> InsertEstudiantes(Estudiantes args)
+        {
+            if (!CrossConnectivity.Current.IsConnected)
+            {
+                await Application.Current.MainPage.DisplayAlert("Aviso", "No estas conectado a internet", "Aceptar");
+                return null;
+            }
+
+            HttpResponseMessage request = await client.PostAsync("api/estudiantes",
+                new StringContent(JsonConvert.SerializeObject(args), Encoding.UTF8, "application/json"));
             return request.IsSuccessStatusCode
                 ? request.Content.ReadAsStringAsync().Result.ToString()
                 : null;

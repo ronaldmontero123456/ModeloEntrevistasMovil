@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModeloEntrevistasMovil.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -12,7 +13,14 @@ namespace ModeloEntrevistasMovil
     {
         public MainPage()
         {
+            BindingContext = new MainPageViewmodel();
             InitializeComponent();
+        }
+
+        protected override void OnAppearing()
+        {
+            (BindingContext as MainPageViewmodel).GetEstudiantes();
+            base.OnAppearing();
         }
     }
 }
