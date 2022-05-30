@@ -28,9 +28,13 @@
 
         <StackLayout Grid.Row="1" VerticalOptions="Start">
             <Entry  Text="{Binding Nombre}" Placeholder="Nombre:"></Entry>
-            <DatePicker Date="{Binding PickDate}" Format="dd/MM/yyyy"></DatePicker>
             <Entry Text ="{Binding Curso}" Placeholder="Curso:"></Entry>
-            <Entry Text ="{Binding Estado}" Placeholder="Estado:" Keyboard="Numeric"></Entry>
+            <Grid ColumnDefinitions="*,*" RowDefinitions="*,*">
+                <Label Text="Fecha De Nacimiento:" FontSize="Body" VerticalOptions="Center"></Label>
+                <DatePicker Grid.Column="1" Date="{Binding PickDate}" Format="dd/MM/yyyy"></DatePicker>
+                <Label Text="Estado:" FontSize="Body" Grid.Row="1" VerticalOptions="Center"></Label>
+                <Entry Text ="{Binding Estado}" Grid.Row="1" Grid.Column="1" Placeholder="Estado:" Keyboard="Numeric"></Entry>
+            </Grid>
         </StackLayout>
 
         <Button Grid.Row="1" Text="Aceptar" VerticalOptions="End" Command="{Binding ButtonCommand}"></Button>

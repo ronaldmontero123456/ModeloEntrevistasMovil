@@ -48,7 +48,7 @@ namespace ModeloEntrevistasMovil.Services
                 return null;
             }
 
-            HttpResponseMessage request = await client.GetAsync($"api/estudiantes/{Id}");
+            HttpResponseMessage request = await client.DeleteAsync($"api/estudiantes/{Id}");
             return request.IsSuccessStatusCode
                 ? request.Content.ReadAsStringAsync().Result.ToString()
                 : null;

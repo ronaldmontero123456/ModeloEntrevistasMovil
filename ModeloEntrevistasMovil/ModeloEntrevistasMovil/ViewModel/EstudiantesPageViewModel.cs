@@ -26,15 +26,33 @@ namespace ModeloEntrevistasMovil.ViewModel
         private DateTime pickDate;
         public DateTime PickDate { get => pickDate; set { pickDate = value; RaiseOnPropertyChanged(); } }
 
-        public EstudiantesPageViewModel()
+        private Estudiantes _estudiantes;
+
+        public EstudiantesPageViewModel(Estudiantes estudiantes = null)
         {
             ImageButtonCommand = new Command(GoBack);
             ButtonCommand = new Command(AddProduct);
+
+            if(estudiantes != null)
+            {
+                _estudiantes = estudiantes;
+                Nombre = estudiantes.Nombre;
+                Curso = estudiantes.Curso;
+                PickDate = estudiantes.FechaNacimiento;
+                Estado = estudiantes.Estado;
+            }else
+                PickDate = DateTime.Now;
         }
         private async void AddProduct()
         {
 
-            if(string.IsNullOrEmpty(Nombre))
+            if(Math.Abs(PickDate.Year - DateTime.Now.Year) <= 16)
+            {
+                await App.Current.MainPage.DisplayAlert("Aviso", "El estudiante debe tener al menos  16 años de edad", "cancelar");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(Nombre))
             {
                 await App.Current.MainPage.DisplayAlert("Aviso","Dede introducir el nombre del estudiante","cancelar");
                 return;
@@ -52,15 +70,28 @@ namespace ModeloEntrevistasMovil.ViewModel
                 return;
             }
 
-            Estudiantes estudiante = new Estudiantes()
+            if(_estudiantes != null)
             {
-                Nombre = Nombre,
-                FechaNacimiento = PickDate,
-                Curso = Curso,
-                Estado = Estado,
-            };
+                Estudiantes estudiante = _estudiantes;
+                estudiante.Nombre = Nombre;
+                estudiante.FechaNacimiento = PickDate;
+                estudiante.Curso = Curso;
+                estudiante.Estado = Estado;
 
-            _ = await new ApiManager().InsertEstudiantes(estudiante);
+                _ = await new ApiManager().UpdateEstudiantes(estudiante);
+            }
+            else
+            {
+                Estudiantes estudiante = new Estudiantes()
+                {
+                    Nombre = Nombre,
+                    FechaNacimiento = PickDate,
+                    Curso = Curso,
+                    Estado = Estado,
+                };
+
+                _ = await new ApiManager().InsertEstudiantes(estudiante);
+            }
 
             GoBack();
         }

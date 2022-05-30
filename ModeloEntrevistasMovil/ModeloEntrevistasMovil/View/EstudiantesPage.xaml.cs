@@ -1,4 +1,5 @@
-﻿using ModeloEntrevistasMovil.ViewModel;
+﻿using ModeloEntrevistasMovil.Model;
+using ModeloEntrevistasMovil.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +14,9 @@ namespace ModeloEntrevistasMovil.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class EstudiantesPage : ContentPage
     {
-        public EstudiantesPage()
+        public EstudiantesPage(Estudiantes estudiantes)
         {
-            BindingContext = new EstudiantesPageViewModel();
+            BindingContext = new EstudiantesPageViewModel(estudiantes);
             InitializeComponent();
         }
     }

@@ -63,8 +63,13 @@
                 <Label Text="Estudiantes" TextColor="#2D2942" FontSize="20" FontAttributes="Bold" VerticalOptions="Center" />
             </Grid>
 
-            <CollectionView Grid.Row="3" Margin="25" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
-                        SelectionMode="None" ItemsSource="{Binding Estudiantes}">
+            <CollectionView Grid.Row="3" 
+                            Margin="25" 
+                            HorizontalOptions="FillAndExpand" 
+                            VerticalOptions="FillAndExpand"
+                            SelectionMode="Single"
+                            SelectedItem="{Binding EstudianteSelected}"
+                            ItemsSource="{Binding Estudiantes}"                            >
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Vertical" ItemSpacing="20"/>
                 </CollectionView.ItemsLayout>

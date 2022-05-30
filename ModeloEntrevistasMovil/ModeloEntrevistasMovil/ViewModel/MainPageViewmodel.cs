@@ -24,11 +24,15 @@ namespace ModeloEntrevistasMovil.ViewModel
         public ObservableCollection<Estudiantes> EstudiantesToGive;
         public ICommand SearchBarCommand { get; private set; }
         public ICommand GoToAddCommand { get; private set; }
+
+        private Estudiantes estudianteSelected;
+        public Estudiantes EstudianteSelected { get => estudianteSelected; set { estudianteSelected = value; RaiseOnPropertyChanged(); if (value != null) { ItemSelected(value); } } }
+
         public MainPageViewmodel()
         {
             EstudiantesToGive = new ObservableCollection<Estudiantes>();
             SearchBarCommand = new Command((searchbar) => FilterEstudiantes(searchbar?.ToString()));
-            GoToAddCommand = new Command(PushAdd);
+            GoToAddCommand = new Command(() => PushAdd());
         }
 
         public async void GetEstudiantes()
@@ -59,9 +63,40 @@ namespace ModeloEntrevistasMovil.ViewModel
             Estudiantes = new ObservableCollection<Estudiantes>(EstudiantesToGive.Where(e => e.Nombre.ToUpper().Contains(searchbar.ToUpper())));
         }
 
-        private void PushAdd()
+        private void PushAdd(Estudiantes estudiantes = null)
         {
-            App.Current.MainPage.Navigation.PushAsync(new EstudiantesPage());
+            App.Current.MainPage.Navigation.PushAsync(new EstudiantesPage(estudiantes));
+        }
+
+        private async void ItemSelected(Estudiantes estudiantes)
+        {
+            string[] buttons = new string[] {"Eliminar", "Editar" };
+
+            string result = await App.Current.MainPage.DisplayActionSheet("", "", null, buttons);
+
+            switch (result)
+            {
+                case "Eliminar":
+                    DeleteEstudiante(estudiantes.ID);
+                    GetEstudiantes();
+                    break;
+                case "Editar":
+                    PushAdd(estudiantes);
+                    break;
+            }
+        }
+
+        private async void DeleteEstudiante(int id)
+        {
+           bool result = await App.Current.MainPage.DisplayAlert("Aviso","Seguro Que Desea Eliminar Estudiante", "Aceptar", "Cancelar");
+
+            if(result)
+            {
+                string deleteresult = await new ApiManager().DeleteEstudiantes(id);
+                await App.Current.MainPage.DisplayAlert("Aviso", string.IsNullOrEmpty(deleteresult) ?
+                    "Favor Intentar Nuevamente" : deleteresult, "Aceptar", "Cancelar");
+                await new ApiManager().DeleteEstudiantes(id);
+            }            
         }
 
         public void RaiseOnPropertyChanged([CallerMemberName] string propertyName = null)
