@@ -46,7 +46,7 @@ namespace ModeloEntrevistasMovil.ViewModel
         private async void AddProduct()
         {
 
-            if(Math.Abs(PickDate.Year - DateTime.Now.Year) <= 16)
+            if(Math.Abs(PickDate.Year - DateTime.Now.Year) < 16)
             {
                 await App.Current.MainPage.DisplayAlert("Aviso", "El estudiante debe tener al menos  16 años de edad", "cancelar");
                 return;

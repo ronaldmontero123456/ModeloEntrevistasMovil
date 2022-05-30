@@ -1,19 +1,18 @@
-﻿using ModeloEntrevistasMovil.Model;
+﻿
+using ModeloEntrevistasMovil.Model;
 using ModeloEntrevistasMovil.Services;
 using ModeloEntrevistasMovil.View;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace ModeloEntrevistasMovil.ViewModel
 {
-    public class MainPageViewmodel: INotifyPropertyChanged
+    public class MainPageViewmodel : INotifyPropertyChanged
     {
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -70,33 +69,36 @@ namespace ModeloEntrevistasMovil.ViewModel
 
         private async void ItemSelected(Estudiantes estudiantes)
         {
-            string[] buttons = new string[] {"Eliminar", "Editar" };
+            string[] buttons = new string[] { "Eliminar", "Editar" };
 
             string result = await App.Current.MainPage.DisplayActionSheet("", "", null, buttons);
 
             switch (result)
             {
                 case "Eliminar":
-                    DeleteEstudiante(estudiantes.ID);
+                    await DeleteEstudiante(estudiantes.ID);
                     GetEstudiantes();
                     break;
                 case "Editar":
                     PushAdd(estudiantes);
                     break;
+                default:
+                    GetEstudiantes();
+                    break;
             }
         }
 
-        private async void DeleteEstudiante(int id)
+        private async Task DeleteEstudiante(int id)
         {
-           bool result = await App.Current.MainPage.DisplayAlert("Aviso","Seguro Que Desea Eliminar Estudiante", "Aceptar", "Cancelar");
+            bool result = await App.Current.MainPage.DisplayAlert("Aviso", "Seguro Que Desea Eliminar Estudiante", "Aceptar", "Cancelar");
 
-            if(result)
+            if (result)
             {
                 string deleteresult = await new ApiManager().DeleteEstudiantes(id);
                 await App.Current.MainPage.DisplayAlert("Aviso", string.IsNullOrEmpty(deleteresult) ?
-                    "Favor Intentar Nuevamente" : deleteresult, "Aceptar", "Cancelar");
+                    "Favor Intentar Nuevamente" : deleteresult, "Aceptar");
                 await new ApiManager().DeleteEstudiantes(id);
-            }            
+            }
         }
 
         public void RaiseOnPropertyChanged([CallerMemberName] string propertyName = null)
