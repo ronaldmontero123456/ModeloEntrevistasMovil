@@ -1,12 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ModeloEntrevistasMovil.View.EstudiantesPage">
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+             x:Class="ModeloEntrevistasMovil.View.EstudiantesPage"
+             xmlns:behavior="clr-namespace:ModeloEntrevistasMovil.View.Controls.Behavior"
+             xmlns:convert="clr-namespace:ModeloEntrevistasMovil.ViewModel.Converters"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="#F5F6F6">
+
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <convert:ClickedEventArgsConvert x:Key="ClickedConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="100,*">
+
+        <ImageButton Source="back.png" Margin="20,30" BackgroundColor="Transparent" HorizontalOptions="Start" VerticalOptions="Start"
+                             HeightRequest="24" WidthRequest="24">
+            <ImageButton.Behaviors>
+                <behavior:EventToCommandBehavior
+                            EventName="Clicked" 
+                            Command="{Binding ImageButtonCommand}"
+                            EventArgsConverter="{StaticResource ClickedConverter}" />
+            </ImageButton.Behaviors>
+        </ImageButton>
+
+        <StackLayout Grid.Row="1" VerticalOptions="Start">
+            <Entry  Text="{Binding Nombre}" Placeholder="Nombre:"></Entry>
+            <DatePicker Date="{Binding PickDate}" Format="dd/MM/yyyy"></DatePicker>
+            <Entry Text ="{Binding Curso}" Placeholder="Curso:"></Entry>
+            <Entry Text ="{Binding Estado}" Placeholder="Estado:" Keyboard="Numeric"></Entry>
         </StackLayout>
-    </ContentPage.Content>
+
+        <Button Grid.Row="1" Text="Aceptar" VerticalOptions="End" Command="{Binding ButtonCommand}"></Button>
+    </Grid>
+
 </ContentPage>

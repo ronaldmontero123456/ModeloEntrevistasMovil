@@ -34,7 +34,11 @@
             <Grid ColumnDefinitions="Auto, *, Auto">
                 <Label Grid.Column="1" Text="Modelo Entrevitas" TextColor="#2D2942" FontSize="20" FontAttributes="Bold" 
                        VerticalOptions="Center" HorizontalOptions="Center"/>
-                <Image Grid.Column="2" Source="add.png" VerticalOptions="Center" HeightRequest="24" WidthRequest="24"/>
+                <Image Grid.Column="2" Source="add.png" VerticalOptions="Center" HeightRequest="24" WidthRequest="24">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding GoToAddCommand}"/>
+                    </Image.GestureRecognizers>
+                </Image>
             </Grid>
             <Grid Grid.Row="1" ColumnDefinitions="*, Auto" ColumnSpacing="15">
                 <Frame Padding="10" HeightRequest="25" HorizontalOptions="Center" Opacity="0.5" 

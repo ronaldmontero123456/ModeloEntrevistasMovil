@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModeloEntrevistasMovil.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ namespace ModeloEntrevistasMovil.View
     {
         public EstudiantesPage()
         {
+            BindingContext = new EstudiantesPageViewModel();
             InitializeComponent();
         }
     }

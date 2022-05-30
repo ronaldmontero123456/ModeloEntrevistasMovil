@@ -1,5 +1,6 @@
 ﻿using ModeloEntrevistasMovil.Model;
 using ModeloEntrevistasMovil.Services;
+using ModeloEntrevistasMovil.View;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,10 +23,12 @@ namespace ModeloEntrevistasMovil.ViewModel
 
         public ObservableCollection<Estudiantes> EstudiantesToGive;
         public ICommand SearchBarCommand { get; private set; }
+        public ICommand GoToAddCommand { get; private set; }
         public MainPageViewmodel()
         {
             EstudiantesToGive = new ObservableCollection<Estudiantes>();
             SearchBarCommand = new Command((searchbar) => FilterEstudiantes(searchbar?.ToString()));
+            GoToAddCommand = new Command(PushAdd);
         }
 
         public async void GetEstudiantes()
@@ -54,6 +57,11 @@ namespace ModeloEntrevistasMovil.ViewModel
         private void SetEstudiantes(string searchbar)
         {
             Estudiantes = new ObservableCollection<Estudiantes>(EstudiantesToGive.Where(e => e.Nombre.ToUpper().Contains(searchbar.ToUpper())));
+        }
+
+        private void PushAdd()
+        {
+            App.Current.MainPage.Navigation.PushAsync(new EstudiantesPage());
         }
 
         public void RaiseOnPropertyChanged([CallerMemberName] string propertyName = null)
