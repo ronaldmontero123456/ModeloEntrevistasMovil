@@ -48,7 +48,7 @@ namespace ModeloEntrevistasMovil.ViewModel
 
             if(Estado <= 0)
             {
-                await App.Current.MainPage.DisplayAlert("Aviso", "Dede introducir el estado del estudiante", "aceptar", "cancelar");
+                await App.Current.MainPage.DisplayAlert("Aviso", "Dede introducir el estado del estudiante", "cancelar");
                 return;
             }
 
